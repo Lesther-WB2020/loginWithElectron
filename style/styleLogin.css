@@ -1,0 +1,47 @@
+/*
+.soyUnaClase{}
+#soyUnId{}
+*/
+#imgIconLogin{
+    width: 100;
+    height: 70px; 
+}
+
+#tableFormulario{
+    padding: 5px;
+    border-spacing: 25px;   
+    background-image: url('../img/login-background.jpg');
+}
+.columnError{
+    width: 400px;
+}
+
+#btnSubmit{
+    color: #003366;
+    background-color: #99CCFF;
+    font-size: 20px;
+    width: 175px;
+    font-weight: bold;
+}
+
+label{
+    font-weight: bold;
+    color:#00074F;
+    font-size: 20px;
+}
+
+.errorInput{
+    color: red;
+    text-align: left;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.inP{
+    width: auto;
+    height: 25px;
+}
+
+.invalid{
+    border-color: red;
+}

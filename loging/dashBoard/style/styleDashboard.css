@@ -1,0 +1,34 @@
+/*
+.soyUnaClase{}
+#soyUnId{}
+*/
+#div-image{
+    float: left;
+    background-color: rgb(67, 236, 242);
+}
+#imgIconUser{
+    width: 400px;
+    height: 425px;
+}
+#div-content{
+    float: right;
+    background-color: rgb(233, 242, 68);
+    display: table;
+}
+
+#welcomeUser{
+    font-weight: bold;
+    color: black;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+div{
+    width: 400px;
+    height: 425px;
+}
+
+body{
+    background-color: cornflowerblue;
+}

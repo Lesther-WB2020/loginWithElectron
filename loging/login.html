@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LOGIN</title>
+    <link rel="stylesheet" href="../style/styleLogin.css">
+</head>
+<body>
+    <table id="tableFormulario">
+        <form action="" id="myForm">
+        <tr>
+            <td></td>
+            <td><img src="../img/loginIcon.jpg" alt="ICONO DE LOGIN" id="imgIconLogin"></td>
+            <td class="columnError"></td>
+        </tr>
+        <tr>
+            <td><label for="userName">USUARIO</label></td>
+            <td><input type="text" id="userName" class="inP" placeholder="gasparcito77" required></td>
+            <td class="columnError"><div class="errorInput" id="errorName"></div></td>
+        </tr>
+        <tr>
+            <td><label for="userMail" >E-MAIL</label></td>
+            <td><input type="text" id="userMail" class="inP" placeholder="myEmail@example.com" required></td>
+            <td class="columnError" ><div class="errorInput" id="errorEmail"></div></td>
+        </tr>
+        <tr>
+            <td><label for="userPass">CONTRASEÑA</label></td>
+            <td><input type="password" id="userPass"  class="inP" required></td>
+            <td class="columnError"><div class="errorInput" id="errorPass"></div></td>
+        </tr>
+        <tr>
+            <td><label for="userDate">FECHA NAC.</label></td>
+            <td><input type="date" id="userDate"  class="inP" value="1990-01-01"></td>
+            <td class="columnError"><div class="errorInput" id="errorDate"></div></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="LOG IN" id="btnSubmit"></td>
+            <td class="columnError"></td>
+        </tr>
+        </form>
+    </table>
+        <script>
+            require('./login.js')
+        </script>
+</body>
+</html>
