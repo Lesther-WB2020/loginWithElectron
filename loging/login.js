@@ -1,6 +1,46 @@
 const {ipcRenderer} = require('electron');
 
-document.getElementById('myForm').addEventListener('submit',function(event){
+document.getElementById('userDate').addEventListener('change',event=>{
+
+    userDate.classList.remove('invalid');
+    var errorDate = document.getElementById('errorDate');
+    errorDate.innerHTML = '';
+
+    //event.target.value es el string value del datepicker, pero como queremos @separar los valores pues lo pasamos a new date
+    let fechaSeleccionada = new Date(event.target.value);
+    let diaSeleccionado = fechaSeleccionada.getDate();
+    if(diaSeleccionado!=31){
+        diaSeleccionado = diaSeleccionado+1;
+    }
+    let mesSeleccionado = fechaSeleccionada.getMonth()+1;
+    let anioSeleccioando = fechaSeleccionada.getFullYear();
+
+    let fs = anioSeleccioando + '-' + mesSeleccionado + '-' + diaSeleccionado;
+    console.log(fs);
+
+    let fechaActual = new Date();
+    let diaActual = fechaActual.getDate();
+    let mesActual = fechaActual.getMonth()+1;
+    let anioActual = fechaActual.getFullYear();
+    let fa = anioActual + '-' + mesActual + '-' + diaActual;
+    console.log(fa); 
+
+        if(anioSeleccioando>anioActual){
+            errorDate.innerHTML = 'EL AÑO SELECCIONADO NO ES VÁLIDO';
+            userDate.classList.add('invalid');
+        }else if((anioSeleccioando==anioActual)&&(mesSeleccionado>mesActual)){
+                errorDate.innerHTML = 'EL MES SELECCIONADO NO ES VÁLIDO';
+                userDate.classList.add('invalid');
+        }else if((anioSeleccioando==anioActual)&&(mesSeleccionado==mesActual)&&(diaSeleccionado>diaActual)){
+                    errorDate.innerHTML = 'EL DÍA SELECCIONADO NO ES VÁLIDO';
+                    userDate.classList.add('invalid');
+        }
+
+        
+
+})
+
+document.getElementById('myForm').addEventListener('submit',event=>{
     event.preventDefault()
 
         //obtenemos los datos del formulario
@@ -13,27 +53,30 @@ document.getElementById('myForm').addEventListener('submit',function(event){
         var errorName = document.getElementById('errorName');
         var errorEmail = document.getElementById('errorEmail');
         var errorPass = document.getElementById('errorPass');
-        var errorDate = document.getElementById('errorDate');
 
         //limpiar contenido de validaciones previas para poner las nuevas.
         errorName.innerHTML = '';
         errorEmail.innerHTML = '';
         errorPass.innerHTML = '';
-        errorDate.innerHTML = '';
 
         //varialbes 'banderas' para disparar mensajes dependiendo del caso.
         var cantidadDeErrores = 0;
         var erroNameBand = 0;
         var erroMailBand = 0;
         var erroPassBand = 0;
-        var erroDateBand = 0;
 
         //limpiamos classlist invalid de los inputs para que permita enviar los formularios
         //en caso de que se cumplan con todas las validaciones que quizas de forma previa no se hayan cumplido
         userName.classList.remove('invalid');
         userMail.classList.remove('invalid');
         userPass.classList.remove('invalid');
-        userDate.classList.remove('invalid');
+
+        //*****validando e-mail
+        if(validarEmail(userMail.value)!=true){
+            errorEmail.innerHTML = 'EL CORREO ELECTRÓNICO NO ES VÁLIDO';
+            erroMailBand++;
+            userMail.classList.add('invalid');
+        }
 
         //*****validando contraseña
             //longitud
@@ -89,12 +132,11 @@ document.getElementById('myForm').addEventListener('submit',function(event){
                 userPass.classList.add('invalid');
             }
 
-
         // SE AJUSTA LA VENTANA CON BASE AL N[UMERO DE ERRORES ENCONTRADO.
-        cantidadDeErrores = erroNameBand + erroMailBand + erroPassBand + erroDateBand;
+        cantidadDeErrores = erroNameBand + erroMailBand + erroPassBand;
 
         //SI LOS INPUTS NO TIENEN CLASES INVALID, PODEMOS ENVIAR EL FORMULARIO
-        if(!userPass.classList.contains('invalid')){
+        if((!userPass.classList.contains('invalid'))&&(!userMail.classList.contains('invalid'))&&(!userDate.classList.contains('invalid'))){
             ipcRenderer.send('formularioValido',[userName.value,userMail.value]);
             //var window = remote.getCurrentWindow();
             //window.close();
@@ -103,3 +145,7 @@ document.getElementById('myForm').addEventListener('submit',function(event){
         }
 })
 
+function validarEmail(emailUser) {
+    var expReg= /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+        return expReg.test(emailUser);
+}

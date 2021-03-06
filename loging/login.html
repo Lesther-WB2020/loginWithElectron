@@ -29,7 +29,8 @@
         </tr>
         <tr>
             <td><label for="userDate">FECHA NAC.</label></td>
-            <td><input type="date" id="userDate"  class="inP" value="1990-01-01"></td>
+            <!-- sinceramente no creo que alguien a estas fechas tenga mas de 120 años ._. -->
+            <td><input type="date" id="userDate" class="inP" min="1910-01-01" required></td>
             <td class="columnError"><div class="errorInput" id="errorDate"></div></td>
         </tr>
         <tr>
