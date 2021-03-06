@@ -35,10 +35,7 @@ document.getElementById('userDate').addEventListener('change',event=>{
                     errorDate.innerHTML = 'EL DÍA SELECCIONADO NO ES VÁLIDO';
                     userDate.classList.add('invalid');
         }
-
-        
-
-})
+});
 
 document.getElementById('myForm').addEventListener('submit',event=>{
     event.preventDefault()
@@ -47,7 +44,6 @@ document.getElementById('myForm').addEventListener('submit',event=>{
         var userName = document.getElementById('userName');
         var userMail = document.getElementById('userMail');
         var userPass = document.getElementById('userPass');
-        var userDate = document.getElementById('userDate');
 
         //obtenemos los divs, para eventualmente poder poner contenido o mensajes de error en caso de que lo haya.
         var errorName = document.getElementById('errorName');
@@ -70,6 +66,15 @@ document.getElementById('myForm').addEventListener('submit',event=>{
         userName.classList.remove('invalid');
         userMail.classList.remove('invalid');
         userPass.classList.remove('invalid');
+
+        //validar usuario
+        if(userName.value==''){
+                errorName.innerHTML = 'DEBES LLENAR ESTE CAMPO'
+                erroNameBand++;
+                userName.classList.add('invalid');
+        }else{
+            ipcRenderer.send('validarUsuario',userName.value);
+        }
 
         //*****validando e-mail
         if(validarEmail(userMail.value)!=true){
@@ -136,16 +141,21 @@ document.getElementById('myForm').addEventListener('submit',event=>{
         cantidadDeErrores = erroNameBand + erroMailBand + erroPassBand;
 
         //SI LOS INPUTS NO TIENEN CLASES INVALID, PODEMOS ENVIAR EL FORMULARIO
-        if((!userPass.classList.contains('invalid'))&&(!userMail.classList.contains('invalid'))&&(!userDate.classList.contains('invalid'))){
+        if((!userPass.classList.contains('invalid'))&&(!userMail.classList.contains('invalid'))&&(!userName.classList.contains('invalid'))){
             ipcRenderer.send('formularioValido',[userName.value,userMail.value]);
             //var window = remote.getCurrentWindow();
             //window.close();
         }else{
             ipcRenderer.send('errorEnFormulario',cantidadDeErrores);
         }
-})
+});
 
 function validarEmail(emailUser) {
     var expReg= /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
         return expReg.test(emailUser);
 }
+
+ipcRenderer.on('usuario-existe',(event,args)=>{
+        document.getElementById('errorName').innerHTML = args;
+        document.getElementById('userName').classList.add('invalid');
+})

@@ -1,7 +1,9 @@
 const {app, BrowserWindow} = require('electron');
 const {ipcMain} = require('electron'); 
 
+let usuarios = new Array();
 let loginW;
+
 function loginWindow(){
     loginW = new BrowserWindow({
         width: 865,
@@ -39,7 +41,7 @@ ipcMain.on('errorEnFormulario',(event,args)=>{
     
 ipcMain.on('formularioValido',(event,args)=>{
     loginW.setSize(865,500);
-    console.log(args);
+    //console.log(args);
     //event.reply('send-data-to-dashboard',args); 
     //creamos la ventana
     dashBoardWindow();
@@ -47,4 +49,14 @@ ipcMain.on('formularioValido',(event,args)=>{
     dashboardW.webContents.on('did-finish-load',()=>{
         dashboardW.webContents.send('send-data-to-dashboard',args)
     })
+})
+
+ipcMain.on('validarUsuario',(event,args)=>{
+    if(usuarios.includes(args)==true){
+        event.reply('usuario-existe','EL USUARIO '+args+' YA EXISTE');
+        console.log('el usuario ya existe.');
+    }else{
+        usuarios.push(args);
+        console.log('usuario registrado');
+    }
 })
