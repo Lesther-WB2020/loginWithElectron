@@ -148,7 +148,7 @@ document.getElementById('myForm').addEventListener('submit',event=>{
             }else{
                 ipcRenderer.send('errorEnFormulario',cantidadDeErrores);
             }
-        },500)     
+        },0001)     
 });
 
 function validarEmail(emailUser) {
