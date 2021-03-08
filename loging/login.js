@@ -39,9 +39,6 @@ document.getElementById('userDate').addEventListener('change',event=>{
 
 document.getElementById('myForm').addEventListener('submit',event=>{
     event.preventDefault()
-        setTimeout(()=>{
-            console.log('espero se haya validado');
-        },3000)
         //obtenemos los datos del formulario
         var userName = document.getElementById('userName');
         var userMail = document.getElementById('userMail');
@@ -75,10 +72,7 @@ document.getElementById('myForm').addEventListener('submit',event=>{
                 erroNameBand++;
                 userName.classList.add('invalid');
         }else{
-            ipcRenderer.send('validarUsuario',userName.value);
-                setTimeout(()=>{
-                    console.log('espero se haya validado');
-                },3000)
+                ipcRenderer.send('validarUsuario',userName.value);
         }
 
         //*****validando e-mail
@@ -146,13 +140,15 @@ document.getElementById('myForm').addEventListener('submit',event=>{
         cantidadDeErrores = erroNameBand + erroMailBand + erroPassBand;
 
         //SI LOS INPUTS NO TIENEN CLASES INVALID, PODEMOS ENVIAR EL FORMULARIO
-        if((!userPass.classList.contains('invalid'))&&(!userMail.classList.contains('invalid'))&&(!userName.classList.contains('invalid')&&(!userDate.classList.contains('invalid')))){
-            ipcRenderer.send('formularioValido',[userName.value,userMail.value]);
-            //var window = remote.getCurrentWindow();
-            //window.close();
-        }else{
-            ipcRenderer.send('errorEnFormulario',cantidadDeErrores);
-        }
+        setTimeout(()=>{
+            if((!userPass.classList.contains('invalid'))&&(!userMail.classList.contains('invalid'))&&(!userName.classList.contains('invalid')&&(!userDate.classList.contains('invalid')))){
+                ipcRenderer.send('formularioValido',[userName.value,userMail.value]);
+                //var window = remote.getCurrentWindow();
+                //window.close();
+            }else{
+                ipcRenderer.send('errorEnFormulario',cantidadDeErrores);
+            }
+        },500)     
 });
 
 function validarEmail(emailUser) {
